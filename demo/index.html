@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <title>calendar-inline demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script type="module" src="../index.js"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>Basic calendar-inline Demo</h1>
+        <nav>
+          <a href="https://github.com/manufosela/calendar-inline" title="github public repository">
+            <img src="https://img.shields.io/badge/github-repository-green" alt="github" />
+          </a>
+          <a href="https://www.npmjs.com/package/calendar-inline" title="npm package calendar-inline">
+            <img src="https://img.shields.io/badge/npmjs-package-red" alt="npm-package" />
+          </a>
+        </nav>
+      </header>
+      <aside class="blocks">
+        <pre class="block code">
+          <h3>Example</h3>
+          <code>
+            &lt;calendar-inline&gt;&lt;/calendar-inline&gt;
+          </code>
+        </pre>
+        <pre class="block attributes">
+          <h3>Attributes</h3>
+          <ul>
+            <li>property1 (String [default Value])</li>
+            <li>property2 (Number) [default Value]</li>
+          </ul>
+          <h3>Events</h3>
+          <ul>
+            <li>web-component_event-name-1</li>
+            <li>web-component_event-name-2</li>
+          </ul>
+          <p class="note">
+            NOTE: Events must send its node id into 
+            detail CustomEvent
+          </p>
+        </pre>
+      </aside>
+
+      <main>
+        <div id="example1" class="block">
+          <fieldset>
+            <div>
+              <h3>Example 1</h3>
+            </div>
+          </fieldset>
+          <calendar-inline id="calendar-inline-1"></calendar-inline>
+        </div>
+      </main>
+      
+      <script>
+        const arrPublicHolidays = [
+          { title: "Año nuevo", date: '1/1' },
+          { title: "Dia de Reyes", date: '6/1' },
+          { title: "San José obrero", date: '19/3' },
+          { title: "Día del trabajador", date: '1/5' },
+          { title: "Día de la comunidad de Madrid", date: '2/5' },
+          { title: "San Isidro", date: '15/5' },
+          { title: "Día de la Asunción de la Virgen", date: '15/8' },
+          { title: "Día de todos los santos", date: '2/11' },
+          { title: "Día de la Almudena", date: '9/11' },
+          { title: "Día de la constitución", date: '6/12' },
+          { title: "Día de la Inmaculada Concepción", date: '8/12' },
+          { title: "Festivo en Kairós", date: '24/12' },
+          { title: "Navidad", date: '25/12' },
+          { title: "Festivo en Kairós", date: '31/12' }
+        ];
+        const arrHolidays = [
+          { title:"Vaciones", date: "29/3" },
+          { title:"Libre disposición", date: "30/3" },
+          { title:"Vaciones", date: "31/3" }
+        ];
+        function init() {
+          const evPublicHoliday = new CustomEvent('set-public-holidays', {detail:{id:'calendar-inline-1', arrPublicHolidays}});
+          const evHoliday = new CustomEvent('set-holidays', {detail:{id:'calendar-inline-1', arrHolidays}});
+          document.dispatchEvent(evPublicHoliday);
+          document.dispatchEvent(evHoliday);
+        }
+
+        window.onload = init;
+      </script>
+
+      <footer>developed by <b>manufosela</b></footer>
+    </div>
+  </body>
+</html>
