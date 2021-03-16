@@ -239,7 +239,7 @@ export class CalendarInline extends LitElement {
     this.dayContainer = document.createElement('div');
     let noWeekend = true;
     this.dayContainer.className = 'dayContainer';
-    const DoW = this.DAYOFTHEWEEK[this.lang][new Date(this.year, month, day).getDay()];
+    const DoW = this.DAYOFTHEWEEK[this.lang][parseInt(new Date(this.year, month, day).getDay(), 10) + 1];
     if (dataMonthDay) {
       this.dayContainer.style.background = this._getGradient(this.LEGEND[dataMonthDay].code);
       this.dayContainer.title = `${this.LEGEND[dataMonthDay].label} - ${parseInt(day, 10) + 1}/${this.MONTH_LETTERS[this.lang][month].name}/${this.year}`
