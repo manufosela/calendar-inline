@@ -22,6 +22,7 @@ footer { grid-area: footer; padding-top:2rem; display: flex; justify-content: ce
 fieldset { display: flex; justify-content: left; align-items: center; flex-direction: row; border:0; }
 fieldset button { margin:10px 40px; }
 animation-protonimg * { opacity: 0;}
+button { width: 10rem; margin:1rem; }
 
 .container { width: 90vw; display: grid; grid-template-columns: 24vw 6vw 35vw 35vw; grid-template-rows: auto;
   grid-template-areas: ". header header header" "sidebar . main main" "footer footer footer footer"; overflow: hidden;}

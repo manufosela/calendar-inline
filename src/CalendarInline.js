@@ -96,24 +96,49 @@ export class CalendarInline extends LitElement {
 
     this._setArrHolidays = this._setArrHolidays.bind(this);
     this._setArrPublicHolidays = this._setArrPublicHolidays.bind(this);
+    this._setMonth = this._setMonth.bind(this);
 
     document.addEventListener('set-public-holidays', this._setArrPublicHolidays); 
     document.addEventListener('set-holidays', this._setArrHolidays);
+    document.addEventListener('set-month', this._setMonth);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('set-public-holidays', this._setArrPublicHolidays); 
+    document.removeEventListener('set-holidays', this._setArrHolidays);
+    document.removeEventListener('set-month', this._setMonth);
   }
 
   _setArrPublicHolidays(ev) {
     const { id } = ev.detail;
     if (this.id === id || id === undefined) {
-      this.arrPublicHolidays = [...this.arrPublicHolidays, ...ev.detail.arrPublicHolidays];
-      this._drawPublicHolidays();
+      if (ev.detail.noupdate) {
+        this.arrPublicHolidays = ev.detail.arrPublicHolidays;
+      } else {
+        this.arrPublicHolidays = [...this.arrPublicHolidays, ...ev.detail.arrPublicHolidays];
+      }
+      this.drawPublicHolidays();
     }
   }
 
   _setArrHolidays(ev) {
     const { id } = ev.detail;
     if (this.id === id || id === undefined) {
-      this.arrHolidays = [...this.arrHolidays, ...ev.detail.arrHolidays];
-      this._drawHolidays();
+      if (ev.detail.noupdate) {
+        this.arrHolidays = ev.detail.arrHolidays;
+      } else {
+        this.arrHolidays = [...this.arrHolidays, ...ev.detail.arrHolidays];
+      }
+      this.drawHolidays();
+    }
+  }
+
+  _setMonth(ev) {
+    const { id } = ev.detail;
+    if (this.id === id || id === undefined) {
+      const { month } = ev.detail;
+      this.gotoMonth(month - 1);
     }
   }
 
@@ -122,14 +147,7 @@ export class CalendarInline extends LitElement {
     return [31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   }
 
-  checkLocalStorage() {
-    if (window.localStorage[this.structureName] === undefined) {
-      const structure = this.generateDataStructure();
-      localStorage.setItem(this.structureName, JSON.stringify(structure));
-    }
-  }
-
-  calcEasterWeek() {
+  _calcEasterWeek() {
     let M;
     let N;
     let dia;
@@ -187,7 +205,7 @@ export class CalendarInline extends LitElement {
     return noWeekend;
   }
 
-  _drawHolidays() {
+  drawHolidays() {
     this.arrHolidays.forEach(dayHoliday => {
       const cell = this.shadowRoot.querySelector(`[data-date="${dayHoliday.date}"]`);
       if (cell && cell.dataset.noweekend === 'true' && cell.dataset.noholidays === 'true') {
@@ -198,7 +216,7 @@ export class CalendarInline extends LitElement {
     });
   }
 
-  _drawPublicHolidays() {
+  drawPublicHolidays() {
     this.arrPublicHolidays.forEach(dayHoliday => {
       let cell = this.shadowRoot.querySelector(`[data-date="${dayHoliday.date}"]`);
       const dateParts = dayHoliday.date.split('/');
@@ -293,8 +311,7 @@ export class CalendarInline extends LitElement {
     this.stylesMonthHeader = { width: `${monthHeaderSumWidth}px` };
   }
 
-  gotoMonth() {
-    const currentMonth = this.today.getMonth();
+  gotoMonth(currentMonth) {
     const currentMonthName = this.MONTH_LETTERS[this.lang][currentMonth].name;
     const monthLayer = this.shadowRoot.querySelector(`[data-month=${currentMonthName}`);
     this.shadowRoot.getElementById('tableContainer').scrollTo(monthLayer.offsetLeft - document.body.clientWidth / 2.5, 0);
@@ -304,9 +321,9 @@ export class CalendarInline extends LitElement {
     this.MAIN_CONTAINER = this.shadowRoot.querySelector('#mainContainer');
     this.DAYS_HEADER = this.shadowRoot.querySelector('#daysHeader');
     this.MONTH_HEADER = this.shadowRoot.querySelector('#monthHeader');
-    this.calcEasterWeek();
+    this._calcEasterWeek();
     this.createMonths();
-    this.gotoMonth();
+    this.gotoMonth(this.today.getMonth());
   }
 
   render() {

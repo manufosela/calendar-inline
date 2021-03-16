@@ -54,6 +54,11 @@
             </div>
           </fieldset>
           <calendar-inline id="calendar-inline-1"></calendar-inline>
+          <div>
+            <button id="enero" onclick="gotoMonth(1)">Goto Enero</button>
+            <button id="junio" onclick="gotoMonth(6)">Goto Junio</button>
+            <button id="diciemnbre" onclick="gotoMonth(12)">Goto Diciembre</button>
+          </div>
         </div>
       </main>
       
@@ -84,6 +89,11 @@
           const evHoliday = new CustomEvent('set-holidays', {detail:{id:'calendar-inline-1', arrHolidays}});
           document.dispatchEvent(evPublicHoliday);
           document.dispatchEvent(evHoliday);
+        }
+
+        function gotoMonth(month) {
+          const evGotoMonth = new CustomEvent('set-month', {detail:{id:'calendar-inline-1', month: month }});
+          document.dispatchEvent(evGotoMonth);
         }
 
         window.onload = init;
