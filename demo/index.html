@@ -80,9 +80,9 @@
           { title: "Festivo en Kairós", date: '31/12' }
         ];
         const arrHolidays = [
-          { title:"Vaciones", date: "29/3" },
+          { title:"Vacaciones", date: "29/3" },
           { title:"Libre disposición", date: "30/3" },
-          { title:"Vaciones", date: "31/3" }
+          { title:"Vacaciones", date: "31/3", "type": "solicitado" }
         ];
         function init() {
           const evPublicHoliday = new CustomEvent('set-public-holidays', {detail:{id:'calendar-inline-1', arrPublicHolidays}});

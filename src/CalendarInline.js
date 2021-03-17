@@ -92,6 +92,10 @@ export class CalendarInline extends LitElement {
       sp: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
       en: ['Sunday', 'Monday', 'Thursday', 'Wendsday', 'Tuesday', 'Friday', 'Saturday', 'Sunday']
     };
+    this.LEGEND = {
+      'solicitado': '#993',
+      'vacaciones': '#393'
+    }
     this.arrDaysByMonth = this.getArrDaysByMonth();
 
     this._setArrHolidays = this._setArrHolidays.bind(this);
@@ -209,8 +213,13 @@ export class CalendarInline extends LitElement {
     this.arrHolidays.forEach(dayHoliday => {
       const cell = this.shadowRoot.querySelector(`[data-date="${dayHoliday.date}"]`);
       if (cell && cell.dataset.noweekend === 'true' && cell.dataset.noholidays === 'true') {
-        cell.style.background = '#393';
-        cell.title = dayHoliday.title;
+        if (dayHoliday.type) {
+          cell.style.background = this.LEGEND[dayHoliday.type];
+        } else {
+          cell.style.background = '#393';
+        }
+        const type = (dayHoliday.type !== undefined) ? ` - ${dayHoliday.type}` : '';
+        cell.title = dayHoliday.title + type;
         cell.dataset.noHolidays = 'false';
       }
     });
@@ -235,17 +244,12 @@ export class CalendarInline extends LitElement {
     });
   }
 
-  setDayContent(dataMonthDay, month, day) {
+  setDayContent(month, day) {
     this.dayContainer = document.createElement('div');
     let noWeekend = true;
     this.dayContainer.className = 'dayContainer';
     const DoW = this.DAYOFTHEWEEK[this.lang][parseInt(new Date(this.year, month, day).getDay(), 10) + 1];
-    if (dataMonthDay) {
-      this.dayContainer.style.background = this._getGradient(this.LEGEND[dataMonthDay].code);
-      this.dayContainer.title = `${this.LEGEND[dataMonthDay].label} - ${parseInt(day, 10) + 1}/${this.MONTH_LETTERS[this.lang][month].name}/${this.year}`
-    } else {
-      this.dayContainer.title = `${DoW} - ${parseInt(day, 10) + 1}/${this.MONTH_LETTERS[this.lang][month].name}/${this.year}`;
-    }
+    this.dayContainer.title = `${DoW} - ${parseInt(day, 10) + 1}/${this.MONTH_LETTERS[this.lang][month].name}/${this.year}`;
     noWeekend = this.drawIsWeekend(month, day);
     this.dayContainer.dataset.noweekend = noWeekend;
     this.dayContainer.dataset.noholidays = true;
@@ -272,7 +276,7 @@ export class CalendarInline extends LitElement {
   setMonthContainer(month, monthContainer) {
     const days = this.arrDaysByMonth[month];
     for (let day = 0; day < days; day += 1) {
-      this.setDayContent('', month, day);
+      this.setDayContent(month, day);
       monthContainer.appendChild(this.dayContainer);
     }
   }
