@@ -1,5 +1,5 @@
-import { LitElement, html } from "lit-element";
-import { styleMap } from 'lit-html/directives/style-map';
+import { LitElement, html } from "lit";
+import {styleMap} from 'lit-html/directives/style-map.js';
 import { wcNameStyles } from "./calendar-inline-style.js";
 
 /**
@@ -191,9 +191,7 @@ export class CalendarInline extends LitElement {
     const vS = new Date(this.year, mes - 1, dia);
     const juevesSanto = new Date(jS.setDate(easterWeek.getDate() - 3));
     const viernesSanto = new Date(vS.setDate(easterWeek.getDate() - 2));
-    this.arrPublicHolidays = this.arrPublicHolidays.filter((obj) => {
-      return (obj.title !== 'Jueves Santo' && obj.title !== 'Viernes Santo');
-    });
+    this.arrPublicHolidays = this.arrPublicHolidays.filter((obj) => (obj.title !== 'Jueves Santo' && obj.title !== 'Viernes Santo'));
     this.arrPublicHolidays.push({title:'Jueves Santo', date:`${juevesSanto.getDate()}/${juevesSanto.getMonth() + 1}` });
     this.arrPublicHolidays.push({title:'Viernes Santo', date:`${viernesSanto.getDate()}/${viernesSanto.getMonth() + 1}` });
     // console.log(juevesSanto, viernesSanto);

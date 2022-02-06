@@ -1,3 +1,1 @@
-import { CalendarInline } from "./src/CalendarInline.js";
-
-window.customElements.define(CalendarInline.is, CalendarInline);
+export { CalendarInline } from './src/CalendarInline.js';
