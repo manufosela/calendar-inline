@@ -1,11 +1,23 @@
 {
   "name": "calendar-inline",
+  "version": "1.3.0",
   "description": "Webcomponent calendar-inline following open-wc recommendations",
+  "author": "manufosela",
   "license": "MIT",
-  "author": "calendar-inline",
-  "version": "0.0.0",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "calendar-inline.js",
+  "module": "calendar-inline.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/calendar-inline"
+  },
+  "keywords": [
+    "webcomponent",
+    "lit-element"
+  ],
+  "bugs": {
+    "url": "https://github.com/manufosela/calendar-inline/issues"
+  },
+  "homepage": "https://github.com/manufosela/calendar-inline",
   "scripts": {
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server",
